@@ -1,0 +1,113 @@
+※参考サイト：　http://shinsuke789.hatenablog.jp/entry/2017/10/19/100000
+※ダウンロードサイト：　http://www.crystalreports.com/crvs/confirm/
+
+
+VisualStudioでCrystalReportsを使った開発を行うには「SAP Crystal Reports developer version for Visual Studio」が必要です。
+これをインストールすれば開発環境では、問題なく動作します。
+
+しかし、配布するとそのままでは動作しません。
+配布先で動作させるためには、CrystalReportsのランタイム「SAP Crystal Reports Runtime」とインストーラーに「SAP Crystal Reports 
+Runtime - Merge Modules」が必要です。
+
+動作環境
+開発環境
+Windows	10
+VisualStudio	Community 2015 Update3
+.NETFramework	4.6.1
+CrystalReports	13.0.20
+配布先
+Windows	10
+CrystalReports	13.0.20
+VisualStudioのインストーラーでCrystalReportsのMergeModulesを適用する
+VisualStuidoでインストーラーを扱うには、次の記事を参考にして下さい。
+
+shinsuke789.hatenablog.jp
+
+
+1.次のURLにアクセスし「SAP Crystal Reports Runtime - Merge Modules」をダウンロードします。
+
+http://www.crystalreports.com/crvs/confirm/
+
+f:id:shinsuke789:20171017094231j:plain
+
+
+2.ダウンロードしたファイルを解凍し、「CRRuntime_13_0_xx.msm」と「CRRuntime_13_0_xx_ja.msm」のファイルを次の場所にコピーします。
+f:id:shinsuke789:20171017094240j:plain
+C:\Program Files (x86)\Common Files\Merge Modules
+※コピーしなくても動作しますが、ここにコピーしておいた方が使い勝手が良いので
+
+日本語環境なので「ja」のファイルを選択しています。動作環境に言語に合わせて適切なものを選択して下さい。
+
+
+3.VisualStudioのセットアッププロジェクトを右クリックし、「Add」→「Merge Module...」をクリックします。
+f:id:shinsuke789:20171017094256j:plain
+
+4.ファイル選択ダイアログが表示されるので、2のファイルを選択し、プロジェクトに追加します。
+f:id:shinsuke789:20171017094411j:plain
+
+
+5.セットアッププロジェクトをビルドします。いつもより少し時間がかかります。
+
+
+6.ビルドして生成されたインストーラーを配布します。
+
+配布先には事前にCrystalReportsランタイムがインストールされている必要があります。
+
+配布先でCrystalReportsのランタイムをインストールする
+1.次のURLにアクセスし「SAP Crystal Reports Runtime (32Bit)」または「SAP Crystal Reports Runtime (64Bit)」をダウンロードします。
+
+http://www.crystalreports.com/crvs/confirm/
+
+f:id:shinsuke789:20171017092712j:plain
+
+
+2.ダウンロードしたファイルを解凍し、インストーラーを実行します。
+f:id:shinsuke789:20171017092649j:plain
+
+
+3.ウィザードが開始されるので「Next」をクリックします。
+f:id:shinsuke789:20171017092721j:plain
+
+
+4.「I accept the License Agreement」を選択し、「Next」をクリックします。
+f:id:shinsuke789:20171017092730j:plain
+
+
+5.「Next」をクリックします。
+f:id:shinsuke789:20171017092737j:plain
+
+
+6.インストールが終わるまでしばらく待ちます。
+f:id:shinsuke789:20171017092752j:plain
+
+
+7.「Finish」をクリックし、インストールを終了します。
+f:id:shinsuke789:20171017092803j:plain
+
+配布先でのエラー対応
+ファイルが見つからない
+ファイルまたはアセンブリ'CrystalDecisions,CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=xxxxxxxx,またはその依存関係の1つが読み込めませんでした。指定されたファイルが見つかりません。
+
+エラーメッセージに表示されている「Version」のCrystalReportsランタイムがインストールされていないのが原因です。
+この場合、13.0.20のランタイムをインストールすることでエラーは解消します。
+
+初期化子例外
+'CrystalDecisions,CrystalReports.Engine.ReportDocument' のタイプ初期化子が例外をスローしました。System.TypeInitializationException
+
+アプリケーションが、MergeModuleを適用したインストーラーでインストールされていないのが原因です。
+MergeModuleを適用したインストーラーを作成してインストールしなおせば解消します。
+
+旧バージョンのランタイムをダウンロードする
+ランタイム配布サイトでは、最新版しかダウンロードできないと思われますが、URLを書き換えることで可能です。
+
+URLのバージョンを希望のものに変更し、？以降を削除します。
+
+最新版
+http://downloads.businessobjects.com/akdlm/cr4vs2010/CRforVS_redist_install_32bit_13_0_21.zip?_ga=2.242728192.
+309491126.1508199297-555278125.1508199297
+
+旧版
+http://downloads.businessobjects.com/akdlm/cr4vs2010/CRforVS_redist_install_32bit_13_0_20.zip
+参考
+Using Crystal Reports for Visual Studio 2010 Merge Modules (MSM) to create a Setup project - 
+Business Intelligence (BusinessObjects) - SCN Wiki
